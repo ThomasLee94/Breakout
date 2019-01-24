@@ -1,5 +1,5 @@
-let  canvas = document.getElementById("myCanvas");
-let  ctx = canvas.getContext("2d");
+const  canvas = document.getElementById("myCanvas");
+const  ctx = canvas.getContext("2d");
 
 let  ballRadius = 10;
 let  x = canvas.width/2;
@@ -174,3 +174,4 @@ draw();
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("mousemove", mouseMoveHandler, false);
+
