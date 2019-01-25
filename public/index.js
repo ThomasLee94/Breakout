@@ -16,7 +16,7 @@ let rightPressed = false;
 let leftPressed = false;
 
 const brickRowCount = 5;
-const brickColumnCount = 3;
+const brickColumnCount = 5;
 const brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
@@ -24,14 +24,19 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 
 let score = 0;
-
 let lives = 0;
 
 const bricks = [];
+// * Random brick colours
 for (let c = 0; c < brickColumnCount; c += 1) {
-  bricks[c] = [];
+  bricks[c] = []; // [ [], [], [] ]
   for (let r = 0; r < brickRowCount; r += 1) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
+    // let brick = bricks[c][r];
+    const x = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
+    const y = (c * (brickHeight + brickPadding)) + brickOffsetTop;
+    colour = `hsl(${Math.random() * 360}, 50%, 50%)`
+    const brick = { x, y, status: 1, colour };   
+    bricks[c][r] = brick 
   }
 }
 
@@ -96,36 +101,33 @@ const drawPaddle = () => {
 const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     // * Different coloured rows
-    // const color = `hsl(${c * 90}, 50%, 50%)`;
+    // const colour = `hsl(${c * 90}, 50%, 50%)`;
     // * Alternating coloured rows
     // if (c % 2 === 0) {
-    //   color = `hsl(${90}, 50%, 50%)`;
+    //   colour = `hsl(${90}, 50%, 50%)`;
     // } else {
-    //   color = `hsl(${130}, 50%, 50%)`;
+    //   colour = `hsl(${130}, 50%, 50%)`;
     // }
     for (let r = 0; r < brickRowCount; r += 1) {
       // * Different coloured columns
-      // const color = `hsl(${r * 90}, 50%, 50%)`;
+      // const colour = `hsl(${r * 90}, 50%, 50%)`;
       // * Alternating coloured columns
       // if (r % 2 === 0) {
-      //   color = `hsl(${90}, 50%, 50%)`;
+      //   colour = `hsl(${90}, 50%, 50%)`;
       // } else {
-      //   color = `hsl(${130}, 50%, 50%)`;
+      //   colour = `hsl(${130}, 50%, 50%)`;
       // }
       // * Alternating coloured bricks
-      if ((c + r) % 2 === 0) {
-        color = `hsl(${90}, 50%, 50%)`;
-      } else {
-        color = `hsl(${190}, 50%, 50%)`;
-      }
+      // if ((c + r) % 2 === 0) {
+      //   colour = `hsl(${90}, 50%, 50%)`;
+      // } else {
+      //   colour = `hsl(${190}, 50%, 50%)`;
+      // }
+      const {x, y, colour} = bricks[c][r];
       if (bricks[c][r].status === 1) {
-        const brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
-        const brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
         ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = color;
+        ctx.rect(x, y, brickWidth, brickHeight);
+        ctx.fillStyle = colour;
         ctx.fill();
         ctx.closePath();
       }
