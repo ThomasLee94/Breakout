@@ -95,6 +95,7 @@ const drawPaddle = () => {
 
 const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
+    const color = `hsl(${c * 90}, 50%, 50%)`;
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
         const brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
@@ -103,7 +104,7 @@ const drawBricks = () => {
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = '#0095DD';
+        ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
       }
