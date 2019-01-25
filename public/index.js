@@ -95,8 +95,29 @@ const drawPaddle = () => {
 
 const drawBricks = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
-    const color = `hsl(${c * 90}, 50%, 50%)`;
+    // * Different coloured rows
+    // const color = `hsl(${c * 90}, 50%, 50%)`;
+    // * Alternating coloured rows
+    // if (c % 2 === 0) {
+    //   color = `hsl(${90}, 50%, 50%)`;
+    // } else {
+    //   color = `hsl(${130}, 50%, 50%)`;
+    // }
     for (let r = 0; r < brickRowCount; r += 1) {
+      // * Different coloured columns
+      // const color = `hsl(${r * 90}, 50%, 50%)`;
+      // * Alternating coloured columns
+      // if (r % 2 === 0) {
+      //   color = `hsl(${90}, 50%, 50%)`;
+      // } else {
+      //   color = `hsl(${130}, 50%, 50%)`;
+      // }
+      // * Alternating coloured bricks
+      if ((c + r) % 2 === 0) {
+        color = `hsl(${90}, 50%, 50%)`;
+      } else {
+        color = `hsl(${190}, 50%, 50%)`;
+      }
       if (bricks[c][r].status === 1) {
         const brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
         const brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
