@@ -1,15 +1,41 @@
 /* eslint-disable no-undef */
+// Classes do not get hoised
+class Ball {
+  constructor(x, y, radius = 10) {
+    this.x = x;
+    this.y = y;
+    this.dx = 2;
+    this.dy = -2;
+    this.radius = radius;
+  }
+
+  move() {
+    this.x += this.dx;
+    this.y += this.dy;
+  }
+
+  render(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#0095DD';
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+class Paddle {
+  constructor(height = 10, width = 75) {
+    this.height = height;
+    this.width = width;
+  }
+}
+
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-const ballRadius = 10;
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-let dx = 2;
-let dy = -2;
+// Calling the ball constructor function
+const ball = new Ball(canvas.width / 2, canvas.height - 30)
 
-const paddleHeight = 10;
-const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
 
 let rightPressed = false;
@@ -68,8 +94,8 @@ const collisionDetection = () => {
     for (let r = 0; r < brickRowCount; r += 1) {
       const b = bricks[c][r];
       if (b.status == 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy;
+        if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
+          ball.dy = -ball.dy;
           b.status = 0;
           score += 1;
           if (score === brickRowCount * brickColumnCount) {
@@ -82,12 +108,9 @@ const collisionDetection = () => {
   }
 };
 
+
 const drawBall = () => {
-  ctx.beginPath();
-  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = '#0095DD';
-  ctx.fill();
-  ctx.closePath();
+  ball.render(ctx);
 };
 
 const drawPaddle = () => {
@@ -150,30 +173,31 @@ const drawLives = () => {
 const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
-  drawBall();
+  ball.move();
+  ball.render(ctx);
   drawPaddle();
   drawScore();
   drawLives();
   collisionDetection();
 
-  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-    dx = -dx;
+  if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
+    ball.dx = -ball.dx;
   }
-  if (y + dy < ballRadius) {
-    dy = -dy;
-  } else if (y + dy > canvas.height - ballRadius) {
-    if (x > paddleX && x < paddleX + paddleWidth) {
-      dy = -dy;
+  if (ball.y + ball.dy < ball.radius) {
+    ball.dy = -ball.dy;
+  } else if (ball.y + ball.dy > canvas.height - ball.radius) {
+    if (ball.x > paddleX && x < paddleX + paddleWidth) {
+      ball.dy = -ball.dy;
     } else {
       lives += 1;
       if (!lives) {
         alert('GAME OVER');
         document.location.reload();
       } else {
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = 2;
-        dy = -2;
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height - 30;
+        ball.dx = 2;
+        ball.dy = -2;
         paddleX = (canvas.width - paddleWidth) / 2;
       }
     }
@@ -185,8 +209,8 @@ const draw = () => {
     paddleX -= 7;
   }
 
-  x += dx;
-  y += dy;
+  ball.x += ball.dx;
+  ball.y += ball.dy;
   requestAnimationFrame(draw);
 };
 
