@@ -1,5 +1,9 @@
 /* eslint-disable no-undef */
-// Classes do not get hoised
+// Classes do not get hoisted
+
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
 class Ball {
   constructor(x, y, radius = 10) {
     this.x = x;
@@ -27,16 +31,31 @@ class Paddle {
   constructor(height = 10, width = 75) {
     this.height = height;
     this.width = width;
+    this.x = (canvas.width - this.width) / 2; 
+  }
+
+  moveLeft() {
+    paddleX -= 7;
+    // check edges 
+  }
+
+  moveRight() {
+    paddleX += 7;
+    // check for edge 
+  }
+
+  render(ctx) {
+    ctx.beginPath();
+    ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
+    ctx.fillStyle = '#0095DD';
+    ctx.fill();
+    ctx.closePath();
   }
 }
 
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
-
 // Calling the ball constructor function
 const ball = new Ball(canvas.width / 2, canvas.height - 30)
-
-let paddleX = (canvas.width - paddleWidth) / 2;
+const paddle = new Paddle();
 
 let rightPressed = false;
 let leftPressed = false;
@@ -85,7 +104,7 @@ const keyUpHandler = (e) => {
 const mouseMoveHandler = (e) => {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
-    paddleX = relativeX - paddleWidth / 2;
+    paddleX = relativeX - paddle.width / 2;
   }
 };
 
@@ -106,19 +125,6 @@ const collisionDetection = () => {
       }
     }
   }
-};
-
-
-const drawBall = () => {
-  ball.render(ctx);
-};
-
-const drawPaddle = () => {
-  ctx.beginPath();
-  ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = '#0095DD';
-  ctx.fill();
-  ctx.closePath();
 };
 
 const drawBricks = () => {
@@ -175,7 +181,7 @@ const draw = () => {
   drawBricks();
   ball.move();
   ball.render(ctx);
-  drawPaddle();
+  paddle.render(ctx);
   drawScore();
   drawLives();
   collisionDetection();
@@ -186,7 +192,7 @@ const draw = () => {
   if (ball.y + ball.dy < ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.dy > canvas.height - ball.radius) {
-    if (ball.x > paddleX && x < paddleX + paddleWidth) {
+    if (ball.x > paddle.x && x < paddle.x + paddle.width) {
       ball.dy = -ball.dy;
     } else {
       lives += 1;
@@ -198,15 +204,15 @@ const draw = () => {
         ball.y = canvas.height - 30;
         ball.dx = 2;
         ball.dy = -2;
-        paddleX = (canvas.width - paddleWidth) / 2;
+        paddleX = (canvas.width - paddle.width) / 2;
       }
     }
   }
 
   if (rightPressed && paddleX < canvas.width - paddleWidth) {
-    paddleX += 7;
+    paddle.moveRight();
   } else if (leftPressed && paddleX > 0) {
-    paddleX -= 7;
+    paddle.moveLeft();
   }
 
   ball.x += ball.dx;
