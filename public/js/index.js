@@ -1,31 +1,12 @@
 
-// Classes do not get hoisted
+import { Ball } from './ball.js';
+import { Paddle } from './paddle.js';
+import { Brick } from './brick.js';
+import { Score } from './score.js';
+import { Lives } from './lives.js';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-
-class Ball {
-  constructor(x, y, radius = 10) {
-    this.x = x;
-    this.y = y;
-    this.dx = 2;
-    this.dy = -2;
-    this.radius = radius;
-  }
-
-  move() {
-    this.x += this.dx;
-    this.y += this.dy;
-  }
-
-  render(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
-  }
-}
 
 class Paddle {
   constructor(height = 10, width = 75) {
@@ -120,9 +101,17 @@ class Score {
 }
 
 class Lives {
-  constructor(){
-    
+  constructor(font = '16px Arial', colour = '#0095DD', lives = 0){
+    this.font = font;
+    this.colour = colour;
+    this.lives = lives
   }
+
+  render (ctx) {
+    ctx.font = this.font
+    ctx.fillStyle = this.colour;
+    ctx.fillText(`Lives: + ${lives}`, canvas.width - 65, 20);
+  };
 }
 // Calling the ball constructor function
 const ball = new Ball(canvas.width / 2, canvas.height - 30)
@@ -131,8 +120,7 @@ const paddle = new Paddle();
 let rightPressed = false;
 let leftPressed = false;
 
-let lives = 0;
-
+// =====================================================================
 const keyDownHandler = (e) => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
@@ -156,6 +144,16 @@ const mouseMoveHandler = (e) => {
   }
 };
 
+// =====================================================================
+// KEYEVENT LISTENERS
+
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
+document.addEventListener('mousemove', mouseMoveHandler, false);
+
+// ====================================================================
+// FUNCTIONS
+
 const collisionDetection = () => {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
@@ -173,14 +171,6 @@ const collisionDetection = () => {
       }
     }
   }
-};
-
-
-
-const drawLives = () => {
-  ctx.font = '16px Arial';
-  ctx.fillStyle = '#0095DD';
-  ctx.fillText(`Lives: + ${lives}`, canvas.width - 65, 20);
 };
 
 const draw = () => {
@@ -229,6 +219,4 @@ const draw = () => {
 
 draw();
 
-document.addEventListener('keydown', keyDownHandler, false);
-document.addEventListener('keyup', keyUpHandler, false);
-document.addEventListener('mousemove', mouseMoveHandler, false);
+
