@@ -20,7 +20,6 @@ class Bricks {
   render() {
     // * random brick colours
     for (let c = 0; c < brick.columnCount; c += 1) {
-      bricks[c] = []; // [ [], [], [] ]
       for (let r = 0; r < brick.rowCount; r += 1) {
         // let brick = bricks[c][r];
         const x = (r * (brick.width + brick.padding)) + brick.offsetLeft;
