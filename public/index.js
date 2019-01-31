@@ -104,6 +104,26 @@ render(){
 }
 
 }
+
+class Score {
+  constructor(score = 0, font = '16px Arial', colour = '#0095DD'){
+    this.font = font;
+    this.colour = colour; 
+    this.score = score; 
+  }
+
+  render() {
+    ctx.font = this.font;
+    ctx.fillStyle = this.colour;
+    ctx.fillText(`Score: ${score}`, 8, 20);
+  };
+}
+
+class Lives {
+  constructor(){
+    
+  }
+}
 // Calling the ball constructor function
 const ball = new Ball(canvas.width / 2, canvas.height - 30)
 const paddle = new Paddle();
@@ -111,7 +131,6 @@ const paddle = new Paddle();
 let rightPressed = false;
 let leftPressed = false;
 
-let score = 0;
 let lives = 0;
 
 const keyDownHandler = (e) => {
@@ -156,11 +175,7 @@ const collisionDetection = () => {
   }
 };
 
-const drawScore = () => {
-  ctx.font = '16px Arial';
-  ctx.fillStyle = '#0095DD';
-  ctx.fillText(`Score: ${score}`, 8, 20);
-};
+
 
 const drawLives = () => {
   ctx.font = '16px Arial';
