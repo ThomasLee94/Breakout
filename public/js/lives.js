@@ -1,4 +1,4 @@
-class Lives {
+export defaultclass Lives {
   constructor(font = '16px Arial', colour = '#0095DD', lives = 0) {
     this.font = font;
     this.colour = colour;

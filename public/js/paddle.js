@@ -1,4 +1,4 @@
-class Paddle {
+export default class Paddle {
   constructor(height = 10, width = 75) {
     this.height = height;
     this.width = width;

@@ -1,6 +1,6 @@
 import { Brick } from './brick.js';
 
-class Bricks {
+export default class Bricks {
   constructor(rowNum = 5, columnNum = 5) {
     this.rowNum = rowNum;
     this.columnNum = columnNum;
