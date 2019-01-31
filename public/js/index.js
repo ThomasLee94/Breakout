@@ -1,18 +1,12 @@
 /* eslint-disable class-methods-use-this */
-// IMPORTS
-import { Ball } from 'ball.js';
-import { Paddle } from 'paddle.js';
-import { Brick } from 'brick.js';
-import { Bricks } from 'bricks.js';
-import { Score } from 'score.js';
-import { Lives } from 'lives.js';
+// CLASSES IMPORTED FROM SCRIPTS IN HTML
 
 // GLOBAL VARIABLES
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
 // CALLING CONSTRUCTORS FROM IMPORTS TO INSTANTIATE OBJECTS 
-const ball = new Ball(canvas.width / 2, canvas.height - 30)
+const ball = new Ball(canvas.width / 2, canvas.height - 30);
 const paddle = new Paddle();
 const brick = new Brick();
 const bricks = new Bricks();
