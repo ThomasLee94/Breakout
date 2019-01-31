@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 // Classes do not get hoisted
 
 const canvas = document.getElementById('myCanvas');
@@ -51,8 +51,59 @@ class Paddle {
     ctx.fill();
     ctx.closePath();
   }
+  
+class Brick {
+  constructor(colour = '#0095DD'){
+    this.colour = colour;
+    this.width = 75;
+    this.height = 20;
+  }
+
+  render(ctx, ball){
+    ctx.beginPath();
+    ctx.rect(ball.x, ball.y, this.width, this.height);
+    ctx.fillStyle = this.colour;
+    ctx.fill();
+    ctx.closePath();
+  }
 }
 
+class Bricks {
+  constructor(rowNum = 5, columnNum = 5){
+    this.rowNum = rowNum;
+    this.columnNum = columnNum;
+    this.padding = 10;
+    this.offsetTop = 30;
+    this.offsetLeft = 30;
+    this.bricks = [];
+  }
+
+  create(){
+    for (let c = 0; c < this.columnNum; c += 1) {
+      for (let r = 0; r < this.rowNum; r += 1) {
+        this.bricks[c][r] = new Brick(c, r)
+        
+      }
+    }
+    
+}
+
+render(){
+  // * random brick colours
+  for (let c = 0; c < brick.columnCount; c += 1) {
+    bricks[c] = []; // [ [], [], [] ]
+    for (let r = 0; r < brick.rowCount; r += 1) {
+      // let brick = bricks[c][r];
+      const x = (r * (brick.width + brick.padding)) + brick.offsetLeft;
+      const y = (c * (brick.jeight + brick.padding)) + brick.offsetTop;
+      colour = `hsl(${Math.random() * 360}, 50%, 50%)`
+      const brick = { x, y, status: 1, colour };   
+      bricks[c][r] = brick 
+    }
+  }
+}
+
+}
 // Calling the ball constructor function
 const ball = new Ball(canvas.width / 2, canvas.height - 30)
 const paddle = new Paddle();
@@ -60,30 +111,8 @@ const paddle = new Paddle();
 let rightPressed = false;
 let leftPressed = false;
 
-const brickRowCount = 5;
-const brickColumnCount = 5;
-const brickWidth = 75;
-const brickHeight = 20;
-const brickPadding = 10;
-const brickOffsetTop = 30;
-const brickOffsetLeft = 30;
-
 let score = 0;
 let lives = 0;
-
-const bricks = [];
-// * Random brick colours
-for (let c = 0; c < brickColumnCount; c += 1) {
-  bricks[c] = []; // [ [], [], [] ]
-  for (let r = 0; r < brickRowCount; r += 1) {
-    // let brick = bricks[c][r];
-    const x = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
-    const y = (c * (brickHeight + brickPadding)) + brickOffsetTop;
-    colour = `hsl(${Math.random() * 360}, 50%, 50%)`
-    const brick = { x, y, status: 1, colour };   
-    bricks[c][r] = brick 
-  }
-}
 
 const keyDownHandler = (e) => {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
@@ -122,43 +151,6 @@ const collisionDetection = () => {
             document.location.reload();
           }
         }
-      }
-    }
-  }
-};
-
-const drawBricks = () => {
-  for (let c = 0; c < brickColumnCount; c += 1) {
-    // * Different coloured rows
-    // const colour = `hsl(${c * 90}, 50%, 50%)`;
-    // * Alternating coloured rows
-    // if (c % 2 === 0) {
-    //   colour = `hsl(${90}, 50%, 50%)`;
-    // } else {
-    //   colour = `hsl(${130}, 50%, 50%)`;
-    // }
-    for (let r = 0; r < brickRowCount; r += 1) {
-      // * Different coloured columns
-      // const colour = `hsl(${r * 90}, 50%, 50%)`;
-      // * Alternating coloured columns
-      // if (r % 2 === 0) {
-      //   colour = `hsl(${90}, 50%, 50%)`;
-      // } else {
-      //   colour = `hsl(${130}, 50%, 50%)`;
-      // }
-      // * Alternating coloured bricks
-      // if ((c + r) % 2 === 0) {
-      //   colour = `hsl(${90}, 50%, 50%)`;
-      // } else {
-      //   colour = `hsl(${190}, 50%, 50%)`;
-      // }
-      const {x, y, colour} = bricks[c][r];
-      if (bricks[c][r].status === 1) {
-        ctx.beginPath();
-        ctx.rect(x, y, brickWidth, brickHeight);
-        ctx.fillStyle = colour;
-        ctx.fill();
-        ctx.closePath();
       }
     }
   }
