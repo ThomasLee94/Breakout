@@ -1,4 +1,4 @@
-export default class Ball {
+class Ball {
   constructor(x, y, radius = 10) {
     this.x = x;
     this.y = y;

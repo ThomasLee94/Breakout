@@ -1,4 +1,4 @@
-export default class Brick {
+class Brick {
   constructor(colour = '#0095DD') {
     this.colour = colour;
     this.width = 75;
