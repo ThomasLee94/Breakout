@@ -2,118 +2,14 @@
 import { Ball } from './ball.js';
 import { Paddle } from './paddle.js';
 import { Brick } from './brick.js';
+import { Bricks } from './bricks.js';
 import { Score } from './score.js';
 import { Lives } from './lives.js';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-class Paddle {
-  constructor(height = 10, width = 75) {
-    this.height = height;
-    this.width = width;
-    this.x = (canvas.width - this.width) / 2; 
-  }
-
-  moveLeft() {
-    paddleX -= 7;
-    // check edges 
-  }
-
-  moveRight() {
-    paddleX += 7;
-    // check for edge 
-  }
-
-  render(ctx) {
-    ctx.beginPath();
-    ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
-  }
-  
-class Brick {
-  constructor(colour = '#0095DD'){
-    this.colour = colour;
-    this.width = 75;
-    this.height = 20;
-  }
-
-  render(ctx, ball){
-    ctx.beginPath();
-    ctx.rect(ball.x, ball.y, this.width, this.height);
-    ctx.fillStyle = this.colour;
-    ctx.fill();
-    ctx.closePath();
-  }
-}
-
-class Bricks {
-  constructor(rowNum = 5, columnNum = 5){
-    this.rowNum = rowNum;
-    this.columnNum = columnNum;
-    this.padding = 10;
-    this.offsetTop = 30;
-    this.offsetLeft = 30;
-    this.bricks = [];
-  }
-
-  create(){
-    for (let c = 0; c < this.columnNum; c += 1) {
-      for (let r = 0; r < this.rowNum; r += 1) {
-        this.bricks[c][r] = new Brick(c, r)
-        
-      }
-    }
-    
-}
-
-render(){
-  // * random brick colours
-  for (let c = 0; c < brick.columnCount; c += 1) {
-    bricks[c] = []; // [ [], [], [] ]
-    for (let r = 0; r < brick.rowCount; r += 1) {
-      // let brick = bricks[c][r];
-      const x = (r * (brick.width + brick.padding)) + brick.offsetLeft;
-      const y = (c * (brick.jeight + brick.padding)) + brick.offsetTop;
-      colour = `hsl(${Math.random() * 360}, 50%, 50%)`
-      const brick = { x, y, status: 1, colour };   
-      bricks[c][r] = brick 
-    }
-  }
-}
-
-}
-
-class Score {
-  constructor(score = 0, font = '16px Arial', colour = '#0095DD'){
-    this.font = font;
-    this.colour = colour; 
-    this.score = score; 
-  }
-
-  render() {
-    ctx.font = this.font;
-    ctx.fillStyle = this.colour;
-    ctx.fillText(`Score: ${score}`, 8, 20);
-  };
-}
-
-class Lives {
-  constructor(font = '16px Arial', colour = '#0095DD', lives = 0){
-    this.font = font;
-    this.colour = colour;
-    this.lives = lives
-  }
-
-  render (ctx) {
-    ctx.font = this.font
-    ctx.fillStyle = this.colour;
-    ctx.fillText(`Lives: + ${lives}`, canvas.width - 65, 20);
-  };
-}
-// Calling the ball constructor function
+// Calling constructors from imported classes to instantiate objects
 const ball = new Ball(canvas.width / 2, canvas.height - 30)
 const paddle = new Paddle();
 
@@ -175,12 +71,12 @@ const collisionDetection = () => {
 
 const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBricks();
+  bricks.render();
   ball.move();
   ball.render(ctx);
   paddle.render(ctx);
-  drawScore();
-  drawLives();
+  score.render(ctx);
+  lives.render(ctx);
   collisionDetection();
 
   if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
@@ -218,5 +114,3 @@ const draw = () => {
 };
 
 draw();
-
-
