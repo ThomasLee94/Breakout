@@ -2,7 +2,7 @@ class Lives {
   constructor(font = '16px Arial', colour = '#0095DD', lives = 0) {
     this.font = font;
     this.colour = colour;
-    this.lives = livesl
+    this.lives = lives; 
   }
 
   render(ctx) {

@@ -3,6 +3,7 @@ class Brick {
     this.colour = colour;
     this.width = 75;
     this.height = 20;
+    this.status = 1;
   }
 
   render(ctx, ball) {

@@ -8,7 +8,6 @@ const ctx = canvas.getContext('2d');
 // CALLING CONSTRUCTORS FROM IMPORTS TO INSTANTIATE OBJECTS 
 const ball = new Ball(canvas.width / 2, canvas.height - 30);
 const paddle = new Paddle();
-const brick = new Brick();
 const bricks = new Bricks();
 const score = new Score();
 const lives = new Lives();
@@ -46,45 +45,45 @@ document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseMoveHandler, false);
 
-// FUNCTIONS
+class Game {
+  constructor(ball, paddle, bricks, score, lives) {
+    this.ball = ball;
+    this.paddle = paddle;
+    this.bricks = bricks;
+    this.score = score;
+    this.lives = lives; 
+  }
 
-const collisionDetection = () => {
-  for (let c = 0; c < bricks.columnNum; c += 1) {
-    for (let r = 0; r < bricks.rowNum; r += 1) {
-      const b = bricks[c][r];
-      if (b.status == 1) {
-        if (ball.x > b.x && ball.x < b.x + brick.width && ball.y > b.y && ball.y < b.y + brick.height) {
-          ball.dy = -ball.dy;
-          b.status = 0;
-          score += 1;
-          if (score === bricks.rowNum * bricks.columnNum) {
-            alert('YOU WIN, CONGRATS!');
-            document.location.reload();
+  collisonDetection() {
+    for (let c = 0; c < this.bricks.columnNum; c += 1) {
+      for (let r = 0; r < this.bricks.rowNum; r += 1) {
+        const b = this.bricks.bricksArr[c][r];
+        console.log(this.bricks.bricksArr)
+        if (b.status == 1) {
+          if (ball.x > b.x && ball.x < b.x + this.brick.width && ball.y > b.y && ball.y < b.y + this.brick.height) {
+            ball.dy = -ball.dy;
+            b.status = 0;
+            score += 1;
+            if (score === this.bricks.rowNum * this.bricks.columnNum) {
+              alert('YOU WIN, CONGRATS!');
+              document.location.reload();
+            }
           }
         }
       }
     }
   }
-};
-
-class Game {
-  constructor() {
-    this.ball = ball
-    this.paddle = paddle
-    this.bricks = bricks
-    this.score = score
-    this.lives = lives
-  }
 
   run() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    bricks.create(); 
     bricks.render();
     ball.move();
     ball.render(ctx);
     paddle.render(ctx);
     score.render(ctx);
     lives.render(ctx);
-    collisionDetection();
+    this.collisionDetection();
   
     if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
       ball.dx = -ball.dx;
@@ -121,5 +120,7 @@ class Game {
   }
 }
   
-const game = new Game();
+const game = new Game(ball, paddle, bricks, score, lives);
+
 game.run();
+
