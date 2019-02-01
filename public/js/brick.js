@@ -1,14 +1,16 @@
 class Brick {
-  constructor(colour = '#0095DD') {
+  constructor(x, y, colour = '#0095DD') {
     this.colour = colour;
     this.width = 75;
     this.height = 20;
     this.status = 1;
+    this.x = x; 
+    this.y = y;
   }
 
-  render(ctx, ball) {
+  render(ctx) {
     ctx.beginPath();
-    ctx.rect(ball.x, ball.y, this.width, this.height);
+    ctx.rect(this.x, this.y, this.width, this.height);
     ctx.fillStyle = this.colour;
     ctx.fill();
     ctx.closePath();

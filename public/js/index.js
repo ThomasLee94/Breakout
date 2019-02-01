@@ -9,8 +9,8 @@ const ctx = canvas.getContext('2d');
 const ball = new Ball(canvas.width / 2, canvas.height - 30);
 const paddle = new Paddle();
 const bricks = new Bricks();
-const score = new Score();
-const lives = new Lives();
+let score = new Score();
+let lives = new Lives();
 
 let rightPressed = false;
 let leftPressed = false;
@@ -59,8 +59,9 @@ class Game {
       for (let r = 0; r < this.bricks.rowNum; r += 1) {
         const b = this.bricks.bricksArr[c][r];
         console.log(this.bricks.bricksArr)
+        const brick = this.bricks.bricksArr[c][r]
         if (b.status == 1) {
-          if (ball.x > b.x && ball.x < b.x + this.brick.width && ball.y > b.y && ball.y < b.y + this.brick.height) {
+          if (ball.x > b.x && ball.x < b.x + brick.width && ball.y > b.y && ball.y < b.y + brick.height) {
             ball.dy = -ball.dy;
             b.status = 0;
             score += 1;
@@ -77,13 +78,13 @@ class Game {
   run() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     bricks.create(); 
-    bricks.render();
+    bricks.render(ctx);
     ball.move();
     ball.render(ctx);
     paddle.render(ctx);
     score.render(ctx);
     lives.render(ctx);
-    this.collisionDetection();
+    this.collisonDetection();
   
     if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
       ball.dx = -ball.dx;
@@ -116,10 +117,11 @@ class Game {
   
     ball.x += ball.dx;
     ball.y += ball.dy;
-    requestAnimationFrame(draw);
+    requestAnimationFrame(() => {
+      this.run()
+    });
   }
 }
-  
 const game = new Game(ball, paddle, bricks, score, lives);
 
 game.run();
