@@ -32,9 +32,9 @@ class Game {
         if (brick.status === 1) {
           if (this.ball.x > brick.x && this.ball.x < brick.x + brick.width && this.ball.y > brick.y && this.ball.y < brick.y + brick.height) {
             this.ball.dy = -this.ball.dy;
-            this.brick.status = 0;
-            this.score += 1;
-            if (score === this.bricks.rowNum * this.bricks.columnNum) {
+            brick.status = 0;
+            this.score.score += 1;
+            if (this.score.score === this.bricks.rowNum * this.bricks.columnNum) {
               alert('YOU WIN, CONGRATS!');
               document.location.reload();
             }
@@ -63,7 +63,7 @@ class Game {
   mouseMoveHandler(e) {
     const relativeX = e.clientX - this.canvas.offsetLeft;
     if (relativeX > 0 && relativeX < this.canvas.width) {
-      this.paddle.x = relativeX - this.paddle.width / 2;
+      this.paddle.paddleX = relativeX - this.paddle.width / 2;
     }
   }
 
@@ -83,11 +83,11 @@ class Game {
     if (this.ball.y + this.ball.dy < this.ball.radius) {
       this.ball.dy = -this.ball.dy;
     } else if (this.ball.y + this.ball.dy > this.canvas.height - this.ball.radius) {
-      if (this.ball.x > paddle.x && x < this.paddle.x + this.paddle.width) {
+      if (this.ball.x > this.paddle.paddleX && this.ball.x < this.paddle.paddleX + this.paddle.width) {
         this.ball.dy = -this.ball.dy;
       } else {
-        lives -= 1;
-        if (!lives) {
+        this.lives.lives -= 1;
+        if (!this.lives.lives) {
           alert('GAME OVER');
           document.location.reload();
         } else {
@@ -100,9 +100,9 @@ class Game {
       }
     }
   
-    if (this.rightPressed && this.paddleX < this.canvas.width - this.paddle.width) {
+    if (this.rightPressed && this.paddle.paddleX < this.canvas.width - this.paddle.width) {
       this.paddle.moveRight();
-    } else if (this.leftPressed && this.paddle.x > 0) {
+    } else if (this.leftPressed && this.paddle.paddleX > 0) {
       this.paddle.moveLeft();
     }
   
