@@ -1,8 +1,10 @@
 class Paddle {
-  constructor(height = 10, width = 75) {
+  constructor(canvas, height = 10, width = 75) {
     this.height = height;
     this.width = width;
-    this.x = (canvas.width - this.width) / 2; 
+    this.canvas = canvas; 
+    this.x = (this.canvas.width - this.width) / 2; 
+    this.paddleX = (this.canvas.width - this.width) / 2;
   }
 
   moveLeft() {
@@ -17,7 +19,7 @@ class Paddle {
 
   render(ctx) {
     ctx.beginPath();
-    ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
+    ctx.rect(this.x, this.canvas.height - this.height, this.width, this.height);
     ctx.fillStyle = '#0095DD';
     ctx.fill();
     ctx.closePath();

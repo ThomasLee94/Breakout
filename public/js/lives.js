@@ -5,7 +5,7 @@ class Lives {
     this.lives = lives; 
   }
 
-  render(ctx) {
+  render(ctx, canvas) {
     ctx.font = this.font
     ctx.fillStyle = this.colour;
     ctx.fillText(`Lives: + ${this.lives}`, canvas.width - 65, 20);

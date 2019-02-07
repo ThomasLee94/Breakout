@@ -1,16 +1,5 @@
 /* eslint-disable class-methods-use-this */
 // CLASSES IMPORTED FROM SCRIPTS IN HTML
-
-// CALLING CONSTRUCTORS FROM IMPORTS TO INSTANTIATE OBJECTS 
-const ball = new Ball(canvas.width / 2, canvas.height - 30);
-const paddle = new Paddle();
-const bricks = new Bricks();
-bricks.create();
-let paddleX = (canvas.width - paddle.width) / 2;
-let x = canvas.width / 2;
-let score = new Score();
-let lives = new Lives();
-
 class Game {
   constructor(ball, paddle, bricks, score, lives) {
     this.ball = ball;
@@ -25,6 +14,14 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.rightPressed = false;
     this.leftPressed = false;
+    this.ball = new Ball(this.canvas.width / 2, this.canvas.height - 30);
+    this.paddle = new Paddle(this.canvas);
+    this.bricks = new Bricks();
+    this.bricks.create();
+    this.score = new Score();
+    this.lives = new Lives();
+
+
   }
 
   collisonDetection() {
@@ -33,10 +30,10 @@ class Game {
         console.log(this.bricks.bricksArr)
         const brick = this.bricks.bricksArr[c][r];
         if (brick.status === 1) {
-          if (ball.x > brick.x && ball.x < brick.x + brick.width && ball.y > brick.y && ball.y < brick.y + brick.height) {
-            ball.dy = -ball.dy;
-            brick.status = 0;
-            score += 1;
+          if (this.ball.x > brick.x && this.ball.x < brick.x + brick.width && this.ball.y > brick.y && this.ball.y < brick.y + brick.height) {
+            this.ball.dy = -this.ball.dy;
+            this.brick.status = 0;
+            this.score += 1;
             if (score === this.bricks.rowNum * this.bricks.columnNum) {
               alert('YOU WIN, CONGRATS!');
               document.location.reload();
@@ -71,52 +68,51 @@ class Game {
   }
 
   run() {
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.bricks.render(ctx);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.bricks.render(this.ctx);
     this.ball.move();
-    this.ball.render(ctx);
-    this.paddle.render(ctx);
-    this.score.render(ctx);
-    this.lives.render(ctx);
+    this.ball.render(this.ctx);
+    this.paddle.render(this.ctx);
+    this.score.render(this.ctx);
+    this.lives.render(this.ctx, this.canvas);
     this.collisonDetection();
   
-    if (ball.x + ball.dx > this.canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
-      ball.dx = -ball.dx;
+    if (this.ball.x + this.ball.dx > this.canvas.width - this.ball.radius || this.ball.x + this.ball.dx < this.ball.radius) {
+      this.ball.dx = -this.ball.dx;
     }
-    if (ball.y + ball.dy < ball.radius) {
-      ball.dy = -ball.dy;
-    } else if (ball.y + ball.dy > this.canvas.height - ball.radius) {
-      if (ball.x > paddle.x && x < paddle.x + paddle.width) {
-        ball.dy = -ball.dy;
+    if (this.ball.y + this.ball.dy < this.ball.radius) {
+      this.ball.dy = -this.ball.dy;
+    } else if (this.ball.y + this.ball.dy > this.canvas.height - this.ball.radius) {
+      if (this.ball.x > paddle.x && x < this.paddle.x + this.paddle.width) {
+        this.ball.dy = -this.ball.dy;
       } else {
         lives -= 1;
         if (!lives) {
           alert('GAME OVER');
           document.location.reload();
         } else {
-          ball.x = this.canvas.width / 2;
-          ball.y = this.canvas.height - 30;
-          ball.dx = 2;
-          ball.dy = -2;
-          paddleX = (this.canvas.width - paddle.width) / 2;
+          this.ball.x = this.canvas.width / 2;
+          this.ball.y = this.canvas.height - 30;
+          this.ball.dx = 2;
+          this.ball.dy = -2;
+          this.paddleX = (this.canvas.width - this.paddle.width) / 2;
         }
       }
     }
   
-    if (rightPressed && paddleX < this.canvas.width - paddle.width) {
-      paddle.moveRight();
-    } else if (leftPressed && paddle.x > 0) {
-      paddle.moveLeft();
+    if (this.rightPressed && this.paddleX < this.canvas.width - this.paddle.width) {
+      this.paddle.moveRight();
+    } else if (this.leftPressed && this.paddle.x > 0) {
+      this.paddle.moveLeft();
     }
   
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+    this.ball.x += this.ball.dx;
+    this.ball.y += this.ball.dy;
     requestAnimationFrame(() => {
       this.run()
     });
   }
 }
-const game = new Game(ball, paddle, bricks, score, lives);
 
+const game = new Game();
 game.run();
-
