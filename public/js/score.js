@@ -8,6 +8,6 @@ class Score {
   render(ctx) {
     ctx.font = this.font;
     ctx.fillStyle = this.colour;
-    ctx.fillText(`Score: ${score}`, 8, 20);
+    ctx.fillText(`Score: ${this.score}`, 8, 20);
   }
 }

@@ -25,10 +25,12 @@ class Bricks {
 
   render(ctx) {
     // * random brick colours
+    
     for (let c = 0; c < this.columnNum; c += 1) {
       for (let r = 0; r < this.rowNum; r += 1) {
-
-        this.bricksArr[c][r].render(ctx)
+        if(this.bricksArr[c][r].status === 1) {
+          this.bricksArr[c][r].render(ctx)
+        }
         // let brick = bricks[c][r];
         // Dont set the x and y here
         //

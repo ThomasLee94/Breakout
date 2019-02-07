@@ -8,6 +8,6 @@ class Lives {
   render(ctx) {
     ctx.font = this.font
     ctx.fillStyle = this.colour;
-    ctx.fillText(`Lives: + ${lives}`, canvas.width - 65, 20);
+    ctx.fillText(`Lives: + ${this.lives}`, canvas.width - 65, 20);
   };
 }
